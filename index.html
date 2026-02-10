@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine ❤️</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      margin: 0;
+      height: 100vh;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 2px, transparent 2px),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,0.08) 2px, transparent 2px),
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08) 2px, transparent 2px),
+        radial-gradient(circle at 90% 60%, rgba(255,255,255,0.08) 2px, transparent 2px),
+        linear-gradient(135deg, #6a0572, #c94b9b);
+      background-size: 60px 60px, 80px 80px, 70px 70px, 90px 90px, cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: white;
+      position: relative;
+    }
+    .card {
+      background: rgba(0,0,0,0.35);
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      position: relative;
+      z-index: 20;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2.2rem;
+      background: linear-gradient(90deg, #ffd6ff, #ff9ecd, #ffe066);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px rgba(255, 214, 255, 0.6),
+                     0 0 10px rgba(255, 158, 205, 0.6);
+      }
+      to {
+        text-shadow: 0 0 15px rgba(255, 214, 255, 1),
+                     0 0 30px rgba(255, 158, 205, 1);
+      }
+    }
+    .photos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .photos img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .buttons {
+      margin-top: 20px;
+      position: relative;
+      height: 80px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    #yes {
+      background: #ffb6c1;
+      color: #4a0033;
+      margin-right: 10px;
+    }
+    #no {
+      background: #ff4d6d;
+      color: white;
+      position: absolute;
+    }
+    .result {
+      display: none;
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .slideshow img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+    .firework {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: gold;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+      z-index: 15;
+    }
+    @keyframes explode {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(20); opacity: 0; }
+    }
+    /* Rain Hearts from Top */
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .rain-heart {
+      position: fixed; 
+      width: 25px; 
+      height: 23px; 
+      background: linear-gradient(45deg, #ff6b9d, #ff9ecd);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      animation: fall 4s linear infinite; 
+      z-index: 15;
+      box-shadow: 0 0 10px rgba(255,107,157,0.8);
+    }
+    /* Floating Hearts */
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+    .heart-particle {
+      position: fixed; bottom: 0; width: 20px; height: 18px; background: #ff6b9d;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      animation: float 6s linear infinite; z-index: 5;
+    }
+    /* Love Reasons */
+    .love-reasons {
+      margin: 20px 0;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .reason {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s forwards;
+    }
+    .reason:hover {
+      background: rgba(255,182,193,0.3);
+      transform: scale(1.02);
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* NEW Timeline UI - Modern Card Style */
+    /* Modern Romantic Timeline */
+.timeline {
+  margin: 30px 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+  position: relative;
+}
+
+.timeline.active {
+  display: block;
+}
+
+.timeline-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff9ecd, #ffd6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.timeline-container {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #ff9ecd 0%, #ffd6ff 50%, #ffe066 100%);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  opacity: 0;
+}
+
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  background: #ff6b9d;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+  z-index: 2;
+}
+
+.timeline-item.left::before {
+  right: -10px;
+}
+
+.timeline-item.right::before {
+  left: -10px;
+}
+
+.timeline-content {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 182, 193, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 107, 157, 0.2);
+  display: inline-block;
+  max-width: 250px;
+}
+
+.timeline-date {
+  font-weight: bold;
+  color: #ffe066;
+  margin-bottom: 5px;
+}
+
+.timeline-time {
+  background: rgba(255, 182, 193, 0.2);
+  color: #ff9ecd;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 5px;
+  border: 1px solid rgba(255,182,193,0.3);
+}
+
+.timeline-text {
+  margin: 0;
+  line-height: 1.5;
+  color: white;
+  font-size: 0.95rem;
+}
+
+/* Animations */
+.timeline-item.slideInLeft {
+  animation: slideInLeft 0.6s forwards;
+}
+
+.timeline-item.slideInRight {
+  animation: slideInRight 0.6s forwards;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .timeline-item, .timeline-item.left, .timeline-item.right {
+    width: 100%;
+    text-align: left;
+    padding: 20px 20px;
+  }
+  .timeline-item::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+    /* Quiz */
+    .quiz {
+      margin: 20px 0;
+      display: none;
+    }
+    .quiz.active {
+      display: block;
+      animation: fadeInUp 0.5s;
+    }
+    .quiz-question {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-option {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .quiz-option:hover {
+      background: rgba(255,182,193,0.3);
+    }
+    .quiz-score {
+      font-size: 1.5rem;
+      color: #ffe066;
+      margin-top: 10px;
+    }
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      background: linear-gradient(45deg, #ff9ecd, #ffd6ff);
+      color: #4a0033;
+      padding: 15px 30px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    /* Music Toggle */
+    .music-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 30;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Music Toggle -->
+  <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</button>
+  <audio id="bgMusic" loop>
+    <!-- Replace with your romantic song URL -->
+  </audio>
+
+  <div class="card" id="questionCard">
+    <h1>Will you be my Valentine? 💛</h1>
+    <p>One tiny question for my favourite person in the world 😊</p>
+
+    <div class="photos">
+      <img src="photo1.jpg" />
+      <img src="photo2.jpg" />
+      <img src="photo3.jpg" />
+      <img src="photo4.jpg" />
+    </div>
+
+    <div class="buttons">
+      <button id="yes">💖 Yes</button>
+      <button id="no">❌ No</button>
+    </div>
+  </div>
+
+  <div class="card result" id="resultCard">
+    <h1>You are already my girlfriend, babe ❤️</h1>
+    
+    <div class="slideshow">
+      <img id="slide" src="photo1.jpg" />
+    </div>
+
+    <!-- Love Reasons -->
+    <div class="love-reasons">
+      <div class="reason" onclick="revealMore(this)">1. Your smile makes every day brighter ☀️</div>
+      <div class="reason" onclick="revealMore(this)">2. The way you laugh at my silly jokes 😂</div>
+      <div class="reason" onclick="revealMore(this)">3. Our late-night talks that last forever 🌙</div>
+      <div class="reason" onclick="revealMore(this)">4. How you make me feel like the luckiest guy ❤️</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn" onclick="showTimeline()">Wanna see our timeline? 📅💕</button>
+      <button class="action-btn" onclick="startQuiz()">Wanna take a quiz with me? ❓❤️</button>
+    </div>
+
+    <!-- NEW Modern Timeline UI -->
+    <div class="timeline" id="timeline">
+      <div class="timeline-header">Our Love Story 💕</div>
+      <div class="timeline-container">
+        <div class="timeline-line"></div>
+        
+        <div class="timeline-container">
+  <div class="timeline-line"></div>
+  
+  <div class="timeline-container">
+  <div class="timeline-line"></div>
+
+  <div class="timeline-item left slideInLeft">
+    <div class="timeline-content">
+      <div class="timeline-date">Dec 23, 2025</div>
+      <div class="timeline-time">Started Talking</div>
+      <div class="timeline-text">Our first messages - instant connection! ❤️</div>
+    </div>
+  </div>
+
+  <div class="timeline-item right slideInRight">
+    <div class="timeline-content">
+      <div class="timeline-date">May 26, 2025</div>
+      <div class="timeline-time">I Proposed</div>
+      <div class="timeline-text">I proposed and she said YES! 💖</div>
+    </div>
+  </div>
+
+  <div class="timeline-item left slideInLeft">
+    <div class="timeline-content">
+      <div class="timeline-date">Sep 18, 2025</div>
+      <div class="timeline-time">First Trip</div>
+      <div class="timeline-text">Our first Pokhara trip together 🏔️</div>
+    </div>
+  </div>
+
+  <div class="timeline-item right slideInRight">
+    <div class="timeline-content">
+      <div class="timeline-date">Nov 30, 2025</div>
+      <div class="timeline-time">Met in KTM</div>
+      <div class="timeline-text">I went to Kathmandu to meet her 💕</div>
+    </div>
+  </div>
+
+  <div class="timeline-item left slideInLeft">
+    <div class="timeline-content">
+      <div class="timeline-date">Feb 7, 2026</div>
+      <div class="timeline-time">Visited Hometown</div>
+      <div class="timeline-text">Visited her hometown ❤️</div>
+    </div>
+  </div>
+</div>
+
+    <!-- Quiz -->
+    <div class="quiz" id="quiz">
+      <div class="quiz-question" id="questionText">Ready for question 1?</div>
+      <div class="quiz-options" id="options">
+        <!-- Options populated by JS -->
+      </div>
+      <div class="quiz-score" id="score">Score: 0/3</div>
+    </div>
+  </div>
+
+<script>
+  const noBtn = document.getElementById('no');
+  const yesBtn = document.getElementById('yes');
+  const questionCard = document.getElementById('questionCard');
+  const resultCard = document.getElementById('resultCard');
+  const slide = document.getElementById('slide');
+  const musicToggle = document.getElementById('musicToggle');
+  const bgMusic = document.getElementById('bgMusic');
+  const timeline = document.getElementById('timeline');
+  const quiz = document.getElementById('quiz');
+  const questionText = document.getElementById('questionText');
+  const options = document.getElementById('options');
+  const scoreEl = document.getElementById('score');
+
+  const images = ['photo1.jpg','photo2.jpg','photo3.jpg','photo4.jpg'];
+  let index = 0;
+  let currentQuestion = 0;
+
+  // Quiz - ALL ANSWERS AUTOMATICALLY CORRECT
+  const quizData = [
+    {
+      question: "When did we start talking? 💬",
+      options: ["Dec 23, 2024 ✨", "Jan 2025", "March 2025"]
+    },
+    {
+      question: "When did our relationship start? 💑",
+      options: ["May 26, 2025 ❤️", "June 2025", "April 2025"]
+    },
+    {
+      question: "How many days have we been together? 📅",
+      options: ["261+ magical days 💫", "200 days", "1 year"]
+    }
+  ];
+
+  // Floating Hearts
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart-particle';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+  }
+  setInterval(createHeart, 300);
+
+  // Rain Hearts from Top on YES
+  function rainHearts() {
+    for(let i = 0; i < 100; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.className = 'rain-heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, i * 50);
+    }
+  }
+
+  // Music Toggle
+  function toggleMusic() {
+    if (bgMusic.paused) {
+      bgMusic.play().catch(e => console.log('Audio play failed'));
+      musicToggle.textContent = '🔇';
+    } else {
+      bgMusic.pause();
+      musicToggle.textContent = '🎵';
+    }
+  }
+
+  noBtn.addEventListener('mouseover', () => {
+    const x = Math.random() * 300;
+    const y = Math.random() * 60;
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  });
+
+  yesBtn.addEventListener('click', () => {
+    questionCard.style.display = 'none';
+    resultCard.style.display = 'block';
+    
+    // MASSIVE HEART RAIN + Fireworks
+    rainHearts();
+    for(let i=0; i<50; i++){
+      const f = document.createElement('div');
+      f.className = 'firework';
+      f.style.left = Math.random()*window.innerWidth + 'px';
+      f.style.top = Math.random()*window.innerHeight + 'px';
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),1000);
+    }
+
+    // Slideshow
+    setInterval(()=>{
+      index = (index + 1) % images.length;
+      slide.src = images[index];
+    },3000);
+
+    // Animate reasons
+    const reasons = document.querySelectorAll('.reason');
+    reasons.forEach((r, i) => {
+      setTimeout(() => r.style.animationDelay = `${i * 0.2}s`, 100);
+    });
+  });
+
+  function revealMore(reason) {
+    reason.innerHTML += ' (And I mean it forever!) ✨';
+  }
+
+  function showTimeline() {
+    timeline.classList.add('active');
+    const items = document.querySelectorAll('.timeline-item');
+    items.forEach((item, i) => {
+      setTimeout(() => {
+        item.style.animationDelay = '0s';
+        item.style.opacity = '1';
+        item.style.transform = 'translateX(0)';
+      }, i * 250);
+    });
+    launchExtraFireworks();
+  }
+
+  function startQuiz() {
+    quiz.classList.add('active');
+    currentQuestion = 0;
+    scoreEl.textContent = 'Score: 0/3';
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const q = quizData[currentQuestion];
+    questionText.textContent = q.question;
+    options.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.onclick = () => nextQuestion(); // ALL ANSWERS ADVANCE - ALL "CORRECT"
+      options.appendChild(btn);
+    });
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < quizData.length) {
+      loadQuestion();
+    } else {
+      scoreEl.textContent = `Perfect! You know our story by heart 💖`;
+      options.innerHTML = '<button class="action-btn" onclick="quiz.classList.remove(\'active\'); startQuiz();">Play Again? 💕</button>';
+    }
+  }
+
+  function launchExtraFireworks() {
+    for(let i=0; i<20; i++){
+      setTimeout(() => {
+        const f = document.createElement('div');
+        f.className = 'firework';
+        f.style.left = Math.random()*window.innerWidth + 'px';
+        f.style.top = Math.random()*window.innerHeight + 'px';
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),1000);
+      }, i*100);
+    }
+  }
+</script>
+
+</body>
+</html>
